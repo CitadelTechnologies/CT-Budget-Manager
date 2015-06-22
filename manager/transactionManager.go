@@ -51,7 +51,7 @@ func GetTransaction(w http.ResponseWriter, r *http.Request) {
 
 func GetTransactions(w http.ResponseWriter, r *http.Request) {
 
-	var t model.Transactions
+	t := make(model.Transactions, 0)
 	err := MongoDBConnection.DB("test").C("budget").Find(nil).All(&t)
 	CheckError(err)
 
