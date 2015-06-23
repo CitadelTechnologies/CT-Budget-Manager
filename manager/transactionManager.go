@@ -8,6 +8,7 @@ import(
 	"io/ioutil"
 	"time"
 	"gopkg.in/mgo.v2/bson"
+	"github.com/gorilla/mux"
 )
 
 func CreateTransaction(w http.ResponseWriter, r *http.Request) {
@@ -26,6 +27,7 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request) {
 
 	err = json.Unmarshal(body, &t)
 
+	t.Id = bson.NewObjectId()
 	t.Date = time.Now()
 
   	err = MongoDBConnection.DB("test").C("budget").Insert(t)
@@ -41,7 +43,14 @@ func GetTransaction(w http.ResponseWriter, r *http.Request) {
 
 	var t model.Transaction
 
-	err := MongoDBConnection.DB("test").C("budget").Find(bson.M{}).One(&t)
+	vars := mux.Vars(r)
+
+	if !bson.IsObjectIdHex(vars["id"]) {
+		w.WriteHeader(404)
+		return
+	}
+
+	err := MongoDBConnection.DB("test").C("budget").FindId(bson.ObjectIdHex(vars["id"])).One(&t)
 	CheckError(err)
 
 	err = json.NewEncoder(w).Encode(t)

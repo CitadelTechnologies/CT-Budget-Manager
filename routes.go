@@ -52,7 +52,7 @@ var routes = Routes{
     Route{
         "Transaction",
         "GET",
-        "/transactions/{todoId}",
+        "/transactions/{id}",
         manager.GetTransaction,
     },
 }
