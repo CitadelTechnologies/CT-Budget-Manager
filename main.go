@@ -5,9 +5,14 @@ import(
 	"log"
 	"net/http"
 	"fmt"
+	"os"
 )
 
 func main() {
+
+    port := os.Args[1]
+
+    fmt.Printf("%s\n", port)
 
 	fmt.Println("MongoDB server initialization")
 
@@ -19,7 +24,7 @@ func main() {
 
 	router := NewRouter()
 
-	fmt.Println("Server is ready")
+	fmt.Println("Server is listening on port " + port)
 
-	log.Fatal(http.ListenAndServe(":28515", router))
+	log.Fatal(http.ListenAndServe(":" + port, router))
 }

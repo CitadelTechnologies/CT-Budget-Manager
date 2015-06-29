@@ -11,6 +11,13 @@ import(
 	"github.com/gorilla/mux"
 )
 
+/*
+* POST request to create a new Transaction object
+*
+* @param string wording
+* @param string description
+* @param int amount
+*/
 func CreateTransaction(w http.ResponseWriter, r *http.Request) {
 	var t model.Transaction
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
