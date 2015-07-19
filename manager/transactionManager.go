@@ -71,6 +71,8 @@ func GetTransactions(w http.ResponseWriter, r *http.Request) {
 	err := MongoDBConnection.DB("test").C("budget").Find(nil).All(&t)
 	CheckError(err)
 
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	err = json.NewEncoder(w).Encode(t)
 	CheckError(err)
 
