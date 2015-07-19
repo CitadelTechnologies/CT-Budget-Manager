@@ -1,30 +1,28 @@
 package main
 
 import(
-	"budget-manager/manager"
-	"log"
-	"net/http"
-	"fmt"
-	"os"
+    "budget-manager/manager"
+    "log"
+    "net/http"
+    "fmt"
+    gs "github.com/Kern046/GleipnirServer"
 )
 
 func main() {
 
-    port := os.Args[1]
+    gs.Initialize()
 
-    fmt.Printf("%s\n", port)
+    fmt.Println("MongoDB server initialization")
 
-	fmt.Println("MongoDB server initialization")
+    manager.InitMongo()
+    defer manager.MongoDBConnection.Close()
 
-	manager.InitMongo()
-	defer manager.MongoDBConnection.Close()
+    fmt.Println("MongoDB is ready")
+    fmt.Println("Router initialization")
 
-	fmt.Println("MongoDB is ready")
-	fmt.Println("Router initialization")
+    router := NewRouter()
 
-	router := NewRouter()
+    fmt.Println("Server is listening on port " + gs.Server.DedicatedPort)
 
-	fmt.Println("Server is listening on port " + port)
-
-	log.Fatal(http.ListenAndServe(":" + port, router))
+    log.Fatal(http.ListenAndServe(":" + gs.Server.DedicatedPort, router))
 }
