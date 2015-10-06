@@ -1,7 +1,7 @@
 package manager
 
 import(
-	"budget-manager/model"
+	"ct-budget-manager/model"
 	"net/http"
 	"encoding/json"
 	"io"

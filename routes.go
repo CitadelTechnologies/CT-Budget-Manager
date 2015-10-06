@@ -5,7 +5,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"budget-manager/manager"
+	"ct-budget-manager/manager"
 )
 
 type(

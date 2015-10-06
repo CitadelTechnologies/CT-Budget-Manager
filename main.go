@@ -1,7 +1,7 @@
 package main
 
 import(
-    "budget-manager/manager"
+    "ct-budget-manager/manager"
     "log"
     "net/http"
     "fmt"
