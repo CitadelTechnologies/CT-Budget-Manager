@@ -7,8 +7,17 @@ import(
 )
 
 /*
-* POST request to create a new Budget object
-*
+* @return model.Budget
+*/
+func GetBudgets() model.Budgets {
+  	budgets := make(model.Budgets, 0)
+  	if err := MongoDBConnection.DB("test").C("budget").Find(nil).All(&budgets); err != nil {
+      panic(err)
+    }
+    return budgets
+}
+
+/*
 * @param string name
 * @param string description
 * @return model.Budget
