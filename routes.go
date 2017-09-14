@@ -47,6 +47,12 @@ var routes = Routes{
 				"/budgets",
 				controller.GetBudgets,
 		},
+		Route{
+				"Get Budget",
+				"GET",
+				"/budgets/{id}",
+				controller.GetBudget,
+		},
     Route{
         "Transactions",
         "GET",
