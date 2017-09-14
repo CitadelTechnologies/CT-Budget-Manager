@@ -101,6 +101,20 @@ Response
     "updated_at": "2017-09-14T13:19:34.740462493Z"
   },
 ]
+
+```
+GET ```/budgets/{id}```
+
+Response
+```json
+{
+  "id": "5d5f4ds58gr4s5ds33",
+  "name": "My current budget",
+  "description": "Year 2017 budget",
+  "transactions": [],
+  "created_at": "2017-09-14T13:19:34.740462493Z",
+  "updated_at": "2017-09-14T13:19:34.740462493Z"
+}
 ```
 
 POST ```/budgets```

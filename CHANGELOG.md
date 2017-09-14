@@ -2,6 +2,7 @@
 ### Added
 - Budget creation
 - Budgets list
+- Budget details
 - Mongo database name configuration
 
 ## [0.0.1] - 2017-09-14

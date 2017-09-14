@@ -6,8 +6,15 @@ import(
 	"encoding/json"
 	"io"
 	"io/ioutil"
+	"github.com/gorilla/mux"
 )
 
+/*
+* GET request to get all budgets
+*
+* @param http.ResponseWriter w
+* @param http.Request r
+*/
 func GetBudgets(w http.ResponseWriter, r *http.Request) {
     budgets := manager.GetBudgets()
 
@@ -19,11 +26,29 @@ func GetBudgets(w http.ResponseWriter, r *http.Request) {
 }
 
 /*
+* GET request to get a budget by its ID
+*
+* @param http.ResponseWriter w
+* @param http.Request r
+*/
+func GetBudget(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+
+  budget := manager.GetBudget(vars["id"])
+  if budget == nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+	if err := json.NewEncoder(w).Encode(budget); err != nil {
+    panic(err)
+  }
+}
+
+/*
 * POST request to create a new Budget object
 *
 * @param http.ResponseWriter w
 * @param http.Request r
-* @param int amount
 */
 func CreateBudget(w http.ResponseWriter, r *http.Request) {
   var body []byte
