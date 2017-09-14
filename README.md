@@ -13,7 +13,7 @@ Install
 First, pull the image.
 
 ```sh
-docker pull citadel-technologies/budget-manager
+docker pull citadeltechnologies/budget-manager
 ```
 
 The container needs a MongoDB server running to store the data.
@@ -41,7 +41,7 @@ docker run \
   -e "SERVER_PORT=80" \
   --network budget
   -p 80:80 \
-  citadel-technologies/budget-manager
+  citadeltechnologies/budget-manager
 ```
 
 ### Via Docker Compose
@@ -51,7 +51,7 @@ You can add the following service definition to your ```docker-compose.yml``` fi
 ```yml
 budget-manager:
   container_name: ct_budget_manager
-  image: citadel-technologies/budget-manager
+  image: citadeltechnologies/budget-manager
   environment:
     - MONGO_HOST=mongo
     - MONGO_PORT=27017
