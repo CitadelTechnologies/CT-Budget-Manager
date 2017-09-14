@@ -38,6 +38,7 @@ docker run \
   -it \
   -e "MONGO_HOST=budget_mongo" \
   -e "MONGO_PORT=27017" \
+  -e "MONGO_DBNAME=test"
   -e "SERVER_PORT=80" \
   --network budget
   -p 80:80 \
@@ -55,6 +56,7 @@ budget-manager:
   environment:
     - MONGO_HOST=mongo
     - MONGO_PORT=27017
+    - MONGO_DBNAME=test
     - SERVER_PORT=80
   networks:
     - budget

@@ -11,7 +11,7 @@ import(
 */
 func GetBudgets() model.Budgets {
   	budgets := make(model.Budgets, 0)
-  	if err := MongoDBConnection.DB("test").C("budget").Find(nil).All(&budgets); err != nil {
+  	if err := MongoDBConnection.DB(MongoDBName).C("budget").Find(nil).All(&budgets); err != nil {
       panic(err)
     }
     return budgets
@@ -32,7 +32,7 @@ func CreateBudget(name string, description string) model.Budget {
 	budget.CreatedAt = time.Now()
 	budget.UpdatedAt = time.Now()
 
-  if err := MongoDBConnection.DB("test").C("budget").Insert(budget); err != nil {
+  if err := MongoDBConnection.DB(MongoDBName).C("budget").Insert(budget); err != nil {
     panic(err)
   }
   return budget
