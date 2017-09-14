@@ -5,6 +5,7 @@ import (
 
 	"github.com/gorilla/mux"
 
+	"ct-budget-manager/controller"
 	"ct-budget-manager/manager"
 )
 
@@ -22,21 +23,24 @@ func NewRouter() *mux.Router {
 
     router := mux.NewRouter().StrictSlash(true)
     for _, route := range routes {
-
-	go func(router *mux.Router, route Route){
-		router.
-			Methods(route.Method).
-			Path(route.Pattern).
-			Name(route.Name).
-			Handler(route.HandlerFunc)
-	}(router, route)
-
+			go func(router *mux.Router, route Route){
+				router.
+					Methods(route.Method).
+					Path(route.Pattern).
+					Name(route.Name).
+					Handler(route.HandlerFunc)
+			}(router, route)
     }
-
     return router
 }
 
 var routes = Routes{
+		Route{
+				"Create Budget",
+				"POST",
+				"/budgets",
+				controller.CreateBudget,
+		},
     Route{
         "Transactions",
         "GET",
