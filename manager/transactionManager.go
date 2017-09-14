@@ -26,7 +26,7 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request) {
 	CheckError(err)
 	if err := json.Unmarshal(body, &t); err != nil {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		w.WriteHeader(422) // unprocessable entity
+		w.WriteHeader(http.StatusUnprocessableEntity)
 		if err := json.NewEncoder(w).Encode(err); err != nil {
     			panic(err)
 		}

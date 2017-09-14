@@ -1,3 +1,7 @@
+## [Unreleased]
+### Added
+- Budget creation
+
 ## [0.0.1] - 2017-09-14
 ### Added
 - API Docker container configuration
