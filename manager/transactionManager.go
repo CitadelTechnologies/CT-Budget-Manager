@@ -37,7 +37,7 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request) {
 	t.Id = bson.NewObjectId()
 	t.Date = time.Now()
 
-  	err = MongoDBConnection.DB("test").C("budget").Insert(t)
+  	err = MongoDBConnection.DB(MongoDBName).C("budget").Insert(t)
 	CheckError(err)
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
@@ -57,7 +57,7 @@ func GetTransaction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := MongoDBConnection.DB("test").C("budget").FindId(bson.ObjectIdHex(vars["id"])).One(&t)
+	err := MongoDBConnection.DB(MongoDBName).C("budget").FindId(bson.ObjectIdHex(vars["id"])).One(&t)
 	CheckError(err)
 
 	err = json.NewEncoder(w).Encode(t)
@@ -68,7 +68,7 @@ func GetTransaction(w http.ResponseWriter, r *http.Request) {
 func GetTransactions(w http.ResponseWriter, r *http.Request) {
 
 	t := make(model.Transactions, 0)
-	err := MongoDBConnection.DB("test").C("budget").Find(nil).All(&t)
+	err := MongoDBConnection.DB(MongoDBName).C("budget").Find(nil).All(&t)
 	CheckError(err)
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")

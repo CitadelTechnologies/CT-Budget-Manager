@@ -8,6 +8,16 @@ import(
 	"io/ioutil"
 )
 
+func GetBudgets(w http.ResponseWriter, r *http.Request) {
+    budgets := manager.GetBudgets()
+
+  	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+  	if err := json.NewEncoder(w).Encode(budgets); err != nil {
+      panic(err)
+    }
+}
+
 /*
 * POST request to create a new Budget object
 *

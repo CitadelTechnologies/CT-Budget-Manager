@@ -38,6 +38,7 @@ docker run \
   -it \
   -e "MONGO_HOST=budget_mongo" \
   -e "MONGO_PORT=27017" \
+  -e "MONGO_DBNAME=test"
   -e "SERVER_PORT=80" \
   --network budget
   -p 80:80 \
@@ -55,6 +56,7 @@ budget-manager:
   environment:
     - MONGO_HOST=mongo
     - MONGO_PORT=27017
+    - MONGO_DBNAME=test
     - SERVER_PORT=80
   networks:
     - budget
@@ -68,6 +70,38 @@ API
 ### Routes
 
 #### Transactions
+
+GET ```/budgets```
+
+Response
+```json
+[
+  {
+    "id": "56f4r86f5f45a6f62d",
+    "name": "First year budget",
+    "description": "Year 2015 budget",
+    "transactions": [],
+    "created_at": "2015-09-14T13:19:34.740462493Z",
+    "updated_at": "2015-09-14T13:19:34.740462493Z"
+  },
+  {
+    "id": "6regre4g56g435f12f",
+    "name": "Previous year budget",
+    "description": "Year 2016 budget",
+    "transactions": [],
+    "created_at": "2016-09-14T13:19:34.740462493Z",
+    "updated_at": "2016-09-14T13:19:34.740462493Z"
+  },
+  {
+    "id": "5d5f4ds58gr4s5ds33",
+    "name": "My current budget",
+    "description": "Year 2017 budget",
+    "transactions": [],
+    "created_at": "2017-09-14T13:19:34.740462493Z",
+    "updated_at": "2017-09-14T13:19:34.740462493Z"
+  },
+]
+```
 
 POST ```/budgets```
 
