@@ -53,7 +53,7 @@ func GetTransaction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	if !bson.IsObjectIdHex(vars["id"]) {
-		w.WriteHeader(404)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 

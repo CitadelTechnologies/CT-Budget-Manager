@@ -7,7 +7,7 @@ import(
 )
 
 /*
-* @return model.Budget
+* @return model.Budgets
 */
 func GetBudgets() model.Budgets {
   	budgets := make(model.Budgets, 0)
@@ -15,6 +15,21 @@ func GetBudgets() model.Budgets {
       panic(err)
     }
     return budgets
+}
+
+/*
+* @return model.Budget
+*/
+func GetBudget(id string) *model.Budget {
+  	var budget model.Budget
+
+  	if !bson.IsObjectIdHex(id) {
+  		return nil
+  	}
+  	if err := MongoDBConnection.DB(MongoDBName).C("budget").FindId(bson.ObjectIdHex(id)).One(&budget); err != nil {
+      panic(err)
+    }
+    return &budget
 }
 
 /*
