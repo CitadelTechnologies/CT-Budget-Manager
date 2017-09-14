@@ -69,6 +69,28 @@ API
 
 #### Transactions
 
+POST ```/budgets```
+
+Request
+```json
+{
+  "name": "My budget",
+  "description": "Year 2017 budget"
+}
+```
+
+Response
+```json
+{
+  "id": "56f4r86f5f45a6f62d",
+  "name": "My budget",
+  "description": "Year 2017 budget",
+  "transactions": [],
+  "created_at": "2017-09-14T13:19:34.740462493Z",
+  "updated_at": "2017-09-14T13:19:34.740462493Z"
+}
+```
+
 GET ```/transactions```
 
 GET ```/transaction```
