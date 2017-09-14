@@ -5,6 +5,7 @@ import(
     "log"
     "net/http"
     "fmt"
+    "os"
 )
 
 func main() {
@@ -18,7 +19,7 @@ func main() {
 
     router := NewRouter()
 
-    fmt.Println("Server is listening on port 80")
+    fmt.Println("Server is listening on port " + os.Getenv("SERVER_PORT"))
 
-    log.Fatal(http.ListenAndServe(":80", router))
+    log.Fatal(http.ListenAndServe(":" + os.Getenv("SERVER_PORT"), router))
 }
