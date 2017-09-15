@@ -6,7 +6,6 @@ import (
 	"github.com/gorilla/mux"
 
 	"ct-budget-manager/controller"
-	"ct-budget-manager/manager"
 )
 
 type(
@@ -57,18 +56,18 @@ var routes = Routes{
         "Transactions",
         "GET",
         "/transactions",
-        manager.GetTransactions,
+        controller.GetTransactions,
     },
     Route{
         "Create Transaction",
         "POST",
-        "/transactions",
-        manager.CreateTransaction,
+        "/budgets/{id}/transactions",
+        controller.CreateTransaction,
     },
     Route{
         "Transaction",
         "GET",
         "/transactions/{id}",
-        manager.GetTransaction,
+        controller.GetTransaction,
     },
 }
