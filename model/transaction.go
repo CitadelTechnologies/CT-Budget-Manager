@@ -12,7 +12,7 @@ type(
 		Description string `json:"description"`
 		Type bool `json:"type"`
 		Sector Sector `json:"sector"`
-		Amount int `json:"amount"`
+		Amount float64 `json:"amount"`
 		CreatedAt time.Time `json:"created_at"`
 	}
 	Transactions []Transaction

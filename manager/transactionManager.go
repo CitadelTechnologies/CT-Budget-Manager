@@ -16,17 +16,15 @@ import(
 * @parem *model.Transaction
 */
 func CreateTransaction(budgetId string, wording interface{}, description interface{}, tType interface{}, sector interface{}, amount interface{}) *model.Transaction {
-	floatType := tType.(float64)
-	floatAmount := amount.(float64)
 	sectorName := sector.(map[string]interface{})["name"]
-	
+
 	transaction := model.Transaction{
 		Id: bson.NewObjectId(),
 		Wording: wording.(string),
 		Description: description.(string),
-		Type: (int(floatType) > 0),
+		Type: tType.(bool),
 		Sector: model.Sector{Name: sectorName.(string)},
-		Amount: int(floatAmount),
+		Amount: amount.(float64),
 		CreatedAt: time.Now(),
 	}
 	if !AddTransactionToBudget(budgetId, transaction) {
