@@ -52,3 +52,20 @@ func CreateBudget(name string, description string) model.Budget {
   }
   return budget
 }
+
+/*
+* @param string budgetId
+* @param model.Transaction transaction
+* @return bool
+*/
+func AddTransactionToBudget(budgetId string, transaction model.Transaction) bool {
+  budget := GetBudget(budgetId)
+  if budget == nil {
+    return false
+  }
+  budget.Transactions = append(budget.Transactions, transaction)
+  if err := MongoDBConnection.DB(MongoDBName).C("budget").UpdateId(budget.Id, budget); err != nil {
+    panic(err)
+  }
+  return true
+}
