@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.0.2] - 2017-09-15
 ### Added
 - Budget creation
 - Budgets list
