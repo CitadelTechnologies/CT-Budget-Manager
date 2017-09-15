@@ -2,78 +2,62 @@ package manager
 
 import(
 	"ct-budget-manager/model"
-	"net/http"
-	"encoding/json"
-	"io"
-	"io/ioutil"
 	"time"
 	"gopkg.in/mgo.v2/bson"
-	"github.com/gorilla/mux"
 )
 
 /*
-* POST request to create a new Transaction object
-*
-* @param string wording
-* @param string description
-* @param int amount
+* @param string budgetId
+* @param interface{} wording
+* @param interface{} description
+* @param interface{} tType
+* @param interface{} sector
+* @param interface{} amount
+* @parem *model.Transaction
 */
-func CreateTransaction(w http.ResponseWriter, r *http.Request) {
-	var t model.Transaction
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-	CheckError(err)
-	err = r.Body.Close()
-	CheckError(err)
-	if err := json.Unmarshal(body, &t); err != nil {
-		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		w.WriteHeader(http.StatusUnprocessableEntity)
-		if err := json.NewEncoder(w).Encode(err); err != nil {
-    			panic(err)
-		}
+func CreateTransaction(budgetId string, wording interface{}, description interface{}, tType interface{}, sector interface{}, amount interface{}) *model.Transaction {
+	floatType := tType.(float64)
+	floatAmount := amount.(float64)
+	sectorName := sector.(map[string]interface{})["name"]
+	
+	transaction := model.Transaction{
+		Id: bson.NewObjectId(),
+		Wording: wording.(string),
+		Description: description.(string),
+		Type: (int(floatType) > 0),
+		Sector: model.Sector{Name: sectorName.(string)},
+		Amount: int(floatAmount),
+		CreatedAt: time.Now(),
 	}
-
-	err = json.Unmarshal(body, &t)
-
-	t.Id = bson.NewObjectId()
-	t.Date = time.Now()
-
-  	err = MongoDBConnection.DB(MongoDBName).C("budget").Insert(t)
-	CheckError(err)
-
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusCreated)
-	err = json.NewEncoder(w).Encode(t)
-	CheckError(err)
+	if !AddTransactionToBudget(budgetId, transaction) {
+		return nil
+	}
+	return &transaction
 }
 
-func GetTransaction(w http.ResponseWriter, r *http.Request) {
+/*
+* @param string id
+* @return *model.Transaction
+*/
+func GetTransaction(id string) *model.Transaction {
+	var transaction model.Transaction
 
-	var t model.Transaction
-
-	vars := mux.Vars(r)
-
-	if !bson.IsObjectIdHex(vars["id"]) {
-		w.WriteHeader(http.StatusNotFound)
-		return
+	if !bson.IsObjectIdHex(id) {
+		return nil
 	}
-
-	err := MongoDBConnection.DB(MongoDBName).C("budget").FindId(bson.ObjectIdHex(vars["id"])).One(&t)
-	CheckError(err)
-
-	err = json.NewEncoder(w).Encode(t)
-	CheckError(err)
-
+	if err := MongoDBConnection.DB(MongoDBName).C("budget").FindId(bson.ObjectIdHex(id)).One(&transaction); err != nil {
+		panic(err)
+	}
+	return &transaction
 }
 
-func GetTransactions(w http.ResponseWriter, r *http.Request) {
-
-	t := make(model.Transactions, 0)
-	err := MongoDBConnection.DB(MongoDBName).C("budget").Find(nil).All(&t)
-	CheckError(err)
-
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
-	err = json.NewEncoder(w).Encode(t)
-	CheckError(err)
-
+/*
+* @return model.Transactions
+*/
+func GetTransactions() model.Transactions {
+	transactions := make(model.Transactions, 0)
+	if err := MongoDBConnection.DB(MongoDBName).C("budget").Find(nil).All(&transactions); err != nil {
+		panic(err)
+	}
+	return transactions
 }
