@@ -38,15 +38,23 @@ func CreateTransaction(budgetId string, wording interface{}, description interfa
 * @return *model.Transaction
 */
 func GetTransaction(id string) *model.Transaction {
-	var transaction model.Transaction
+	var raw interface{}
 
-	if !bson.IsObjectIdHex(id) {
-		return nil
-	}
-	if err := MongoDBConnection.DB(MongoDBName).C("budget").FindId(bson.ObjectIdHex(id)).One(&transaction); err != nil {
+	if err := MongoDBConnection.
+	DB(MongoDBName).
+	C("budget").
+	Find(bson.M{"transactions._id": bson.ObjectIdHex(id)}).
+	Select(bson.M{"_id": 0, "transactions.$": 1}).
+	One(&raw); err != nil {
+		if err.Error() == "not found" {
+			return nil
+		}
 		panic(err)
 	}
-	return &transaction
+	var data map[string]model.Transactions
+	bytes, _ := bson.Marshal(raw)
+	bson.Unmarshal(bytes, &data)
+	return &data["transactions"][0]
 }
 
 /*
