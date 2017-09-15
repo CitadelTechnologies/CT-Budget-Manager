@@ -141,6 +141,88 @@ Response
 
 GET ```/transactions```
 
-GET ```/transaction```
+Response
+```json
+[
+  {
+      "id": "59bba162a7bfdd0001db65e2",
+      "wording": "Product 10230",
+      "description": "Quantity - 2",
+      "type": true,
+      "sector": {
+          "Name": "e-shop"
+      },
+      "amount": 23.00,
+      "created_at": "2017-09-15T09:46:10.098089142Z"
+  },
+  {
+      "id": "59bba162a7bfdd0001db65e6",
+      "wording": "Product 13542",
+      "description": "Quantity - 1",
+      "type": true,
+      "sector": {
+          "Name": "e-shop"
+      },
+      "amount": 19.85,
+      "created_at": "2017-09-12T12:53:41.098089142Z"
+  },
+  {
+      "id": "59bba162a7bfdd0001db65ef",
+      "wording": "Product 10230",
+      "description": "Quantity - 2",
+      "type": false,
+      "sector": {
+          "Name": "charges"
+      },
+      "amount": 2396.00,
+      "created_at": "2017-09-01T15:00:10.098089142Z"
+  },
+]
+```
 
-POST ```/transaction```
+GET ```/transaction/{id}```
+
+Response
+```json
+{
+    "id": "59bba162a7bfdd0001db65b1",
+    "wording": "Product 10230",
+    "description": "Quantity - 2",
+    "type": true,
+    "sector": {
+        "Name": "e-shop"
+    },
+    "amount": 23.00,
+    "created_at": "2017-09-15T09:46:10.098089142Z"
+}
+```
+
+POST ```/budgets/{budgetId}/transaction```
+
+Request
+```json
+{
+	"wording": "Product 10230",
+	"description": "Quantity - 2",
+	"amount": 23.00,
+	"type": true,
+	"sector": {
+		"name": "e-shop"
+	}
+}
+```
+
+Response
+```json
+{
+    "id": "59bba162a7bfdd0001db65b1",
+    "wording": "Product 10230",
+    "description": "Quantity - 2",
+    "type": true,
+    "sector": {
+        "Name": "e-shop"
+    },
+    "amount": 23.00,
+    "created_at": "2017-09-15T09:46:10.098089142Z"
+}
+```
