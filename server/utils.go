@@ -13,14 +13,14 @@ func DecodeJsonRequest(r *http.Request) map[string]interface{} {
     var body []byte
     var err error
     if body, err = ioutil.ReadAll(io.LimitReader(r.Body, 1048576)); err != nil {
-        panic(exception.New(http.StatusInternalServerError, "Request body could not be opened"))
+        panic(exception.New(http.StatusInternalServerError, "Request body could not be opened", err))
     }
     if err = r.Body.Close(); err != nil {
-        panic(exception.New(http.StatusInternalServerError, "Request body could not be closed"))
+        panic(exception.New(http.StatusInternalServerError, "Request body could not be closed", err))
     }
     var data map[string]interface{}
     if err = json.Unmarshal(body, &data); err != nil {
-        panic(exception.New(http.StatusUnprocessableEntity, "Request body could not be parsed"))
+        panic(exception.New(http.StatusUnprocessableEntity, "Request body could not be parsed", err))
     }
     return data
 }
@@ -39,12 +39,12 @@ func CatchException(w http.ResponseWriter) {
         return
     }
     if exception, ok := r.(*exception.Exception); ok {
-        log.Println(exception.Message)
+        log.Println("[Exception]: " + exception.Message + "; [Error]: " + exception.Error.Error())
         SendJsonResponse(w, exception.Code, exception)
         return
     }
     if err, ok := r.(error); ok {
-        log.Println(err.Error())
+        log.Println("[Error]: " + err.Error())
         SendJsonResponse(w, 500, "Internal server error")
         return
     }

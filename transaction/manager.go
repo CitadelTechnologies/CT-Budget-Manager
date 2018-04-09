@@ -4,7 +4,6 @@ import(
 	"ct-budget-manager/exception"
 	"ct-budget-manager/server"
 	"time"
-	"log"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -21,7 +20,7 @@ func CreateTransaction(budgetSlug string, sectorSlug string, wording string, des
 		"$push": bson.M{"sectors.$.transactions": transaction},
 	}
 	if err := server.App.Database.C("budget").Update(bson.M{"slug": budgetSlug, "sectors.slug": sectorSlug}, change); err != nil {
-		panic(exception.New(404, "Budget or sector not found"))
+		panic(exception.New(404, "Budget or sector not found", err))
 	}
 	return transaction
 }
@@ -59,8 +58,7 @@ func GetTransaction(budgetSlug string, sectorSlug string, id string) *Transactio
         },
     )
     if err := pipe.One(&transaction); err != nil {
-		log.Println(err.Error())
-		panic(exception.New(404, "Not found"))
+		panic(exception.New(404, "Not found", err))
 	}
 	return &transaction
 }
@@ -95,8 +93,7 @@ func GetTransactions(budgetSlug string, sectorSlug string) Transactions {
         },
     )
     if err := pipe.All(&transactions); err != nil {
-		log.Println(err.Error())
-		panic(exception.New(404, "Budget or sector not found"))
+		panic(exception.New(404, "Budget or sector not found", err))
 	}
     return transactions
 }
