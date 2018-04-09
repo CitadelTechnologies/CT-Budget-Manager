@@ -42,6 +42,12 @@ func CreateBudget(name string, description string) *Budget {
 	return budget
 }
 
+func DeleteBudget(slug string) {
+	if err := server.App.Database.C("budget").Remove(bson.M{"slug": slug}); err != nil {
+		panic(exception.New(404, "Budget not found", err))
+	}
+}
+
 func CreateSector(budgetSlug string, name string) *Sector {
 	sector := &Sector{
 		Name: name,

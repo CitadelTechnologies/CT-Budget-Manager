@@ -31,6 +31,14 @@ func CreateBudgetAction(w http.ResponseWriter, r *http.Request) {
 	))
 }
 
+func DeleteBudgetAction(w http.ResponseWriter, r *http.Request) {
+	defer server.CatchException(w)
+
+	DeleteBudget(mux.Vars(r)["slug"])
+
+	w.WriteHeader(204)
+}
+
 func CreateSectorAction(w http.ResponseWriter, r *http.Request) {
 	defer server.CatchException(w)
 
