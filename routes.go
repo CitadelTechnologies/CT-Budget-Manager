@@ -58,6 +58,12 @@ var routes = Routes{
 		"/budgets/{slug}",
 		budget.GetBudgetAction,
 	},
+	Route{
+		"Delete budget",
+		"DELETE",
+		"/budgets/{slug}",
+		budget.DeleteBudgetAction,
+	},
     Route{
         "Transactions",
         "GET",
