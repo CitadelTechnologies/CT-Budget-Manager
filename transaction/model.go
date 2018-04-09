@@ -1,4 +1,4 @@
-package model
+package transaction
 
 import (
 	"time"
@@ -6,13 +6,13 @@ import (
 )
 
 type(
-	Budget struct {
+	Transaction struct {
 		Id bson.ObjectId `json:"id" bson:"_id"`
-		Name string `json:"name"`
+		Wording string `json:"wording"`
 		Description string `json:"description"`
-    Transactions Transactions `json:"transactions"`
+		Type bool `json:"type"`
+		Amount float64 `json:"amount"`
 		CreatedAt time.Time `json:"created_at"`
-		UpdatedAt time.Time `json:"updated_at"`
 	}
-	Budgets []Budget
+	Transactions []Transaction
 )

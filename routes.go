@@ -5,7 +5,8 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"ct-budget-manager/controller"
+	"ct-budget-manager/budget"
+	"ct-budget-manager/transaction"
 )
 
 type(
@@ -19,55 +20,54 @@ type(
 )
 
 func NewRouter() *mux.Router {
-
     router := mux.NewRouter().StrictSlash(true)
     for _, route := range routes {
-			go func(router *mux.Router, route Route){
-				router.
-					Methods(route.Method).
-					Path(route.Pattern).
-					Name(route.Name).
-					Handler(route.HandlerFunc)
-			}(router, route)
+		go func(router *mux.Router, route Route){
+			router.
+				Methods(route.Method).
+				Path(route.Pattern).
+				Name(route.Name).
+				Handler(route.HandlerFunc)
+		}(router, route)
     }
     return router
 }
 
 var routes = Routes{
-		Route{
-				"Create Budget",
-				"POST",
-				"/budgets",
-				controller.CreateBudget,
-		},
-		Route{
-				"Get Budgets",
-				"GET",
-				"/budgets",
-				controller.GetBudgets,
-		},
-		Route{
-				"Get Budget",
-				"GET",
-				"/budgets/{id}",
-				controller.GetBudget,
-		},
+	Route{
+		"Create Budget",
+		"POST",
+		"/budgets",
+		budget.CreateBudgetAction,
+	},
+	Route{
+		"Get Budgets",
+		"GET",
+		"/budgets",
+		budget.GetBudgetsAction,
+	},
+	Route{
+		"Get Budget",
+		"GET",
+		"/budgets/{id}",
+		budget.GetBudgetAction,
+	},
     Route{
         "Transactions",
         "GET",
         "/transactions",
-        controller.GetTransactions,
+        transaction.GetTransactionsAction,
     },
     Route{
         "Create Transaction",
         "POST",
         "/budgets/{id}/transactions",
-        controller.CreateTransaction,
+        transaction.CreateTransactionAction,
     },
     Route{
         "Transaction",
         "GET",
         "/transactions/{id}",
-        controller.GetTransaction,
+        transaction.GetTransactionAction,
     },
 }
