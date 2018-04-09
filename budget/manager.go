@@ -16,13 +16,13 @@ func GetBudgets() Budgets {
     return budgets
 }
 
-func GetBudget(id string) *Budget {
+func GetBudget(slug string) *Budget {
   	var budget Budget
 
-  	if bson.IsObjectIdHex(id) && server.App.Database.C("budget").FindId(bson.ObjectIdHex(id)).One(&budget) == nil {
-      	return &budget
+  	if err := server.App.Database.C("budget").Find(bson.M{"slug": slug}).One(&budget); err != nil {
+      	panic(exception.New(404, "Budget not found"))
     }
-	panic(exception.New(404, "Budget not found"))
+	return &budget
 }
 
 func CreateBudget(name string, description string) *Budget {

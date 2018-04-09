@@ -49,25 +49,25 @@ var routes = Routes{
 	Route{
 		"Get Budget",
 		"GET",
-		"/budgets/{id}",
+		"/budgets/{slug}",
 		budget.GetBudgetAction,
 	},
     Route{
         "Transactions",
         "GET",
-        "/transactions",
+        "/budgets/{budget}/sectors/{sector}/transactions",
         transaction.GetTransactionsAction,
     },
     Route{
         "Create Transaction",
         "POST",
-        "/budgets/{id}/transactions",
+        "/budgets/{budget}/sectors/{sector}/transactions",
         transaction.CreateTransactionAction,
     },
     Route{
         "Transaction",
         "GET",
-        "/transactions/{id}",
+        "/budgets/{budget}/sectors/{sector}/transactions/{id}",
         transaction.GetTransactionAction,
     },
 }

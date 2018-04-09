@@ -17,7 +17,7 @@ func GetBudgetsAction(w http.ResponseWriter, r *http.Request) {
 func GetBudgetAction(w http.ResponseWriter, r *http.Request) {
 	defer server.CatchException(w)
 
-	server.SendJsonResponse(w, 200, GetBudget(mux.Vars(r)["id"]))
+	server.SendJsonResponse(w, 200, GetBudget(mux.Vars(r)["slug"]))
 }
 
 func CreateBudgetAction(w http.ResponseWriter, r *http.Request) {
