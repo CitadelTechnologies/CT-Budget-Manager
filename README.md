@@ -38,9 +38,8 @@ docker run \
   -it \
   -e "MONGO_HOST=budget_mongo" \
   -e "MONGO_PORT=27017" \
-  -e "MONGO_DBNAME=test"
-  -e "SERVER_PORT=80" \
-  --network budget
+  -e "MONGO_DBNAME=test" \
+  --network budget \
   -p 80:80 \
   citadeltechnologies/budget-manager
 ```
@@ -73,47 +72,83 @@ API
 
 GET ```/budgets```
 
-Response
+Response 200
 ```json
 [
   {
     "id": "56f4r86f5f45a6f62d",
     "name": "First year budget",
+    "slug": "first-year-budget",
     "description": "Year 2015 budget",
-    "transactions": [],
+    "sectors": [],
     "created_at": "2015-09-14T13:19:34.740462493Z",
     "updated_at": "2015-09-14T13:19:34.740462493Z"
   },
   {
     "id": "6regre4g56g435f12f",
     "name": "Previous year budget",
+    "slug": "previous-year-budget",
     "description": "Year 2016 budget",
-    "transactions": [],
+    "sectors": [],
     "created_at": "2016-09-14T13:19:34.740462493Z",
     "updated_at": "2016-09-14T13:19:34.740462493Z"
   },
   {
     "id": "5d5f4ds58gr4s5ds33",
     "name": "My current budget",
+    "slug": "my-current-budget",
     "description": "Year 2017 budget",
-    "transactions": [],
+    "sectors": [
+        {
+            "name": "Industry",
+            "slug": "industry",
+            "transactions": [
+                {
+                    "id": "5sdf4sfsdfds22dztra4a",
+                    "wording": "New machine billing",
+                    "description": "3 HB-265s were bought this month",
+                    "type": false,
+                    "amount": 15025.5,
+                    "created_at": "2016-09-14T13:19:34.740462493Z",
+                    "updated_at": "2016-09-14T13:19:34.740462493Z"
+                }
+            ]
+        }
+    ],
     "created_at": "2017-09-14T13:19:34.740462493Z",
     "updated_at": "2017-09-14T13:19:34.740462493Z"
   },
 ]
 
 ```
-GET ```/budgets/{id}```
+GET ```/budgets/{slug}```
 
-Response
+Response 200
 ```json
 {
-  "id": "5d5f4ds58gr4s5ds33",
-  "name": "My current budget",
-  "description": "Year 2017 budget",
-  "transactions": [],
-  "created_at": "2017-09-14T13:19:34.740462493Z",
-  "updated_at": "2017-09-14T13:19:34.740462493Z"
+    "id": "5d5f4ds58gr4s5ds33",
+    "name": "My current budget",
+    "slug": "my-current-budget",
+    "description": "Year 2017 budget",
+    "sectors": [
+        {
+            "name": "Industry",
+            "slug": "industry",
+            "transactions": [
+                {
+                    "id": "5sdf4sfsdfds22dztra4a",
+                    "wording": "New machine billing",
+                    "description": "3 HB-265s were bought this month",
+                    "type": false,
+                    "amount": 15025.5,
+                    "created_at": "2016-09-14T13:19:34.740462493Z",
+                    "updated_at": "2016-09-14T13:19:34.740462493Z"
+                }
+            ]
+        }
+    ],
+    "created_at": "2017-09-14T13:19:34.740462493Z",
+    "updated_at": "2017-09-14T13:19:34.740462493Z"
 }
 ```
 
@@ -122,26 +157,45 @@ POST ```/budgets```
 Request
 ```json
 {
-  "name": "My budget",
-  "description": "Year 2017 budget"
+    "name": "My budget",
+    "description": "Year 2017 budget"
 }
 ```
 
-Response
+Response 201
 ```json
 {
-  "id": "56f4r86f5f45a6f62d",
-  "name": "My budget",
-  "description": "Year 2017 budget",
-  "transactions": [],
-  "created_at": "2017-09-14T13:19:34.740462493Z",
-  "updated_at": "2017-09-14T13:19:34.740462493Z"
+    "id": "56f4r86f5f45a6f62d",
+    "name": "My budget",
+    "slug": "my-budget",
+    "description": "Year 2017 budget",
+    "sectors": [],
+    "created_at": "2017-09-14T13:19:34.740462493Z",
+    "updated_at": "2017-09-14T13:19:34.740462493Z"
 }
 ```
 
-GET ```/transactions```
+POST ```/budgets/{budget-slug}/sectors```
 
-Response
+Request
+```json
+{
+    "name": "Industry"
+}
+```
+
+Response 201
+```json
+{
+    "name": "Industry",
+    "slug": "industry",
+    "transactions": []
+}
+```
+
+GET ```/budgets/{budget-slug}/sectors/{sector-slug}/transactions```
+
+Response 200
 ```json
 [
   {
@@ -149,9 +203,6 @@ Response
       "wording": "Product 10230",
       "description": "Quantity - 2",
       "type": true,
-      "sector": {
-          "Name": "e-shop"
-      },
       "amount": 23.00,
       "created_at": "2017-09-15T09:46:10.098089142Z"
   },
@@ -160,9 +211,6 @@ Response
       "wording": "Product 13542",
       "description": "Quantity - 1",
       "type": true,
-      "sector": {
-          "Name": "e-shop"
-      },
       "amount": 19.85,
       "created_at": "2017-09-12T12:53:41.098089142Z"
   },
@@ -171,57 +219,45 @@ Response
       "wording": "Product 10230",
       "description": "Quantity - 2",
       "type": false,
-      "sector": {
-          "Name": "charges"
-      },
       "amount": 2396.00,
       "created_at": "2017-09-01T15:00:10.098089142Z"
   },
 ]
 ```
 
-GET ```/transaction/{id}```
+GET ```/budgets/{budget-slug}/sectors/{sector-slug}/transactions/{id}```
 
-Response
+Response 200
 ```json
 {
     "id": "59bba162a7bfdd0001db65b1",
     "wording": "Product 10230",
     "description": "Quantity - 2",
     "type": true,
-    "sector": {
-        "Name": "e-shop"
-    },
     "amount": 23.00,
     "created_at": "2017-09-15T09:46:10.098089142Z"
 }
 ```
 
-POST ```/budgets/{budgetId}/transaction```
+POST ```/budgets/{budget-slug}/sectors/{sector-slug}/transactions```
 
 Request
 ```json
 {
 	"wording": "Product 10230",
 	"description": "Quantity - 2",
-	"amount": 23.00,
 	"type": true,
-	"sector": {
-		"name": "e-shop"
-	}
+	"amount": 23.00
 }
 ```
 
-Response
+Response 201
 ```json
 {
     "id": "59bba162a7bfdd0001db65b1",
     "wording": "Product 10230",
     "description": "Quantity - 2",
     "type": true,
-    "sector": {
-        "Name": "e-shop"
-    },
     "amount": 23.00,
     "created_at": "2017-09-15T09:46:10.098089142Z"
 }
