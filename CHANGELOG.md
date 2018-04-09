@@ -1,3 +1,15 @@
+## [0.1.0] - 2018-04-09
+### Added
+- Sector creation
+- Exceptions handling
+- Budget slug
+
+### Changed
+- Packages architecture
+- Transactions are now contained in budget document
+- Sectors are now an array field of budget containing transactions
+- Budgets and sectors are now identified by their slug
+
 ## [0.0.2] - 2017-09-15
 ### Added
 - Budget creation
