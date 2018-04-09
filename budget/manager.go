@@ -3,6 +3,7 @@ package budget
 import(
 	"ct-budget-manager/exception"
 	"ct-budget-manager/server"
+	"github.com/gosimple/slug"
 	"time"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -28,6 +29,7 @@ func CreateBudget(name string, description string) *Budget {
 	budget := &Budget{
 		Id: bson.NewObjectId(),
 		Name: name,
+		Slug: slug.Make(name),
 		Description: description,
 		Sectors: make(Sectors, 0),
 		CreatedAt: time.Now(),
