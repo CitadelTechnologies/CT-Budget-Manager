@@ -152,6 +152,18 @@ Response 200
 }
 ```
 
+DELETE ```/budgets/{slug}```
+
+Response 404
+```json
+{
+    "code": 404,
+    "message": "Budget not found"
+}
+```
+
+Response 204
+
 POST ```/budgets```
 
 Request
