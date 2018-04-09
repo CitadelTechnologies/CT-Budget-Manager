@@ -30,3 +30,14 @@ func CreateBudgetAction(w http.ResponseWriter, r *http.Request) {
 		data["description"].(string),
 	))
 }
+
+func CreateSectorAction(w http.ResponseWriter, r *http.Request) {
+	defer server.CatchException(w)
+
+	data := server.DecodeJsonRequest(r)
+
+	server.SendJsonResponse(w, 201, CreateSector(
+		mux.Vars(r)["slug"],
+		data["name"].(string),
+	))
+}

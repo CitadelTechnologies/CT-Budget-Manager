@@ -9,13 +9,15 @@ import(
 func CreateTransactionAction(w http.ResponseWriter, r *http.Request) {
 	defer server.CatchException(w)
 
+	params := mux.Vars(r)
 	data := server.DecodeJsonRequest(r)
 	transaction := CreateTransaction(
-		mux.Vars(r)["id"],
+		params["budget"],
+		params["sector"],
 		data["wording"].(string),
 		data["description"].(string),
-		data["type"].(string),
-		data["amount"].(string),
+		data["type"].(bool),
+		data["amount"].(float64),
 	)
 	server.SendJsonResponse(w, 201, transaction)
 }
@@ -23,7 +25,13 @@ func CreateTransactionAction(w http.ResponseWriter, r *http.Request) {
 func GetTransactionAction(w http.ResponseWriter, r *http.Request) {
 	defer server.CatchException(w)
 
-	server.SendJsonResponse(w, 200, GetTransaction(mux.Vars(r)["id"]))
+	params := mux.Vars(r)
+
+	server.SendJsonResponse(w, 200, GetTransaction(
+		params["budget"],
+		params["sector"],
+		params["id"],
+	))
 }
 
 func GetTransactionsAction(w http.ResponseWriter, r *http.Request) {
@@ -31,5 +39,9 @@ func GetTransactionsAction(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	server.SendJsonResponse(w, 200, GetTransactions())
+	params := mux.Vars(r)
+	server.SendJsonResponse(w, 200, GetTransactions(
+		params["budget"],
+		params["sector"],
+	))
 }

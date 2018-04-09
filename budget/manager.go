@@ -3,6 +3,7 @@ package budget
 import(
 	"ct-budget-manager/exception"
 	"ct-budget-manager/server"
+	"ct-budget-manager/transaction"
 	"github.com/gosimple/slug"
 	"time"
 	"gopkg.in/mgo.v2/bson"
@@ -39,4 +40,20 @@ func CreateBudget(name string, description string) *Budget {
 		panic(exception.New(500, "Budget creation failed"))
 	}
 	return budget
+}
+
+func CreateSector(budgetSlug string, name string) *Sector {
+	sector := &Sector{
+		Name: name,
+		Slug: slug.Make(name),
+		Transactions: make(transaction.Transactions, 0),
+	}
+	change := bson.M{
+		"$set": bson.M{"updatedat": time.Now()},
+		"$push": bson.M{"sectors": sector},
+	}
+	if err := server.App.Database.C("budget").Update(bson.M{"slug": budgetSlug}, change); err != nil {
+		panic(exception.New(404, "Budget not found"))
+	}
+	return sector
 }

@@ -35,16 +35,22 @@ func NewRouter() *mux.Router {
 
 var routes = Routes{
 	Route{
+		"Get Budgets",
+		"GET",
+		"/budgets",
+		budget.GetBudgetsAction,
+	},
+	Route{
 		"Create Budget",
 		"POST",
 		"/budgets",
 		budget.CreateBudgetAction,
 	},
 	Route{
-		"Get Budgets",
-		"GET",
-		"/budgets",
-		budget.GetBudgetsAction,
+		"Create Sector",
+		"POST",
+		"/budgets/{slug}/sectors",
+		budget.CreateSectorAction,
 	},
 	Route{
 		"Get Budget",

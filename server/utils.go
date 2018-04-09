@@ -5,6 +5,7 @@ import(
     "encoding/json"
     "io"
     "io/ioutil"
+    "log"
     "net/http"
 )
 
@@ -33,8 +34,19 @@ func SendJsonResponse(w http.ResponseWriter, code int, data interface{}) {
 }
 
 func CatchException(w http.ResponseWriter) {
-    if r := recover(); r != nil {
-        exception := r.(*exception.Exception)
-        SendJsonResponse(w, exception.Code, exception)
+    r := recover()
+    if r == nil {
+        return
     }
+    if exception, ok := r.(*exception.Exception); ok {
+        log.Println(exception.Message)
+        SendJsonResponse(w, exception.Code, exception)
+        return
+    }
+    if err, ok := r.(error); ok {
+        log.Println(err.Error())
+        SendJsonResponse(w, 500, "Internal server error")
+        return
+    }
+    panic(r)
 }
