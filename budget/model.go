@@ -19,8 +19,8 @@ type(
 	Budgets []Budget
 
 	Sector struct {
-		Name string `json: "name"`
-		Slug string `json: "slug"`
+		Name string `json:"name"`
+		Slug string `json:"slug"`
     	Transactions transaction.Transactions `json:"transactions"`
 	}
 	Sectors []Sector
