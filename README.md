@@ -56,7 +56,6 @@ budget-manager:
     - MONGO_HOST=mongo
     - MONGO_PORT=27017
     - MONGO_DBNAME=test
-    - SERVER_PORT=80
   networks:
     - budget
   ports:
@@ -107,7 +106,7 @@ Response 200
                     "id": "5sdf4sfsdfds22dztra4a",
                     "wording": "New machine billing",
                     "description": "3 HB-265s were bought this month",
-                    "type": false,
+                    "type": "expense",
                     "amount": 15025.5,
                     "created_at": "2016-09-14T13:19:34.740462493Z",
                     "updated_at": "2016-09-14T13:19:34.740462493Z"
@@ -139,7 +138,7 @@ Response 200
                     "id": "5sdf4sfsdfds22dztra4a",
                     "wording": "New machine billing",
                     "description": "3 HB-265s were bought this month",
-                    "type": false,
+                    "type": "expense",
                     "amount": 15025.5,
                     "created_at": "2016-09-14T13:19:34.740462493Z",
                     "updated_at": "2016-09-14T13:19:34.740462493Z"
@@ -214,7 +213,7 @@ Response 200
       "id": "59bba162a7bfdd0001db65e2",
       "wording": "Product 10230",
       "description": "Quantity - 2",
-      "type": true,
+      "type": "income",
       "amount": 23.00,
       "created_at": "2017-09-15T09:46:10.098089142Z"
   },
@@ -222,7 +221,7 @@ Response 200
       "id": "59bba162a7bfdd0001db65e6",
       "wording": "Product 13542",
       "description": "Quantity - 1",
-      "type": true,
+      "type": "income",
       "amount": 19.85,
       "created_at": "2017-09-12T12:53:41.098089142Z"
   },
@@ -230,7 +229,7 @@ Response 200
       "id": "59bba162a7bfdd0001db65ef",
       "wording": "Product 10230",
       "description": "Quantity - 2",
-      "type": false,
+      "type": "income",
       "amount": 2396.00,
       "created_at": "2017-09-01T15:00:10.098089142Z"
   },
@@ -245,7 +244,7 @@ Response 200
     "id": "59bba162a7bfdd0001db65b1",
     "wording": "Product 10230",
     "description": "Quantity - 2",
-    "type": true,
+    "type": "income",
     "amount": 23.00,
     "created_at": "2017-09-15T09:46:10.098089142Z"
 }
@@ -258,7 +257,7 @@ Request
 {
 	"wording": "Product 10230",
 	"description": "Quantity - 2",
-	"type": true,
+	"type": "income",
 	"amount": 23.00
 }
 ```
@@ -269,7 +268,7 @@ Response 201
     "id": "59bba162a7bfdd0001db65b1",
     "wording": "Product 10230",
     "description": "Quantity - 2",
-    "type": true,
+    "type": "income",
     "amount": 23.00,
     "created_at": "2017-09-15T09:46:10.098089142Z"
 }

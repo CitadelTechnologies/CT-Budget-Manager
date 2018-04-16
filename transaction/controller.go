@@ -16,7 +16,7 @@ func CreateTransactionAction(w http.ResponseWriter, r *http.Request) {
 		params["sector"],
 		data["wording"].(string),
 		data["description"].(string),
-		data["type"].(bool),
+		data["type"].(string),
 		data["amount"].(float64),
 	)
 	server.SendJsonResponse(w, 201, transaction)
