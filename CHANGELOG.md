@@ -1,3 +1,14 @@
+## [0.1.1] - 2018-05-27
+### Added
+- New field process_at for Transactions
+- RAML API documentation
+- Log exception data
+- Catch runtime errors
+- Budget removal webservice
+
+### Changed
+- Transaction type field is now a string
+
 ## [0.1.0] - 2018-04-09
 ### Added
 - Sector creation
