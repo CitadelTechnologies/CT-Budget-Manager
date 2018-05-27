@@ -1,0 +1,105 @@
+#%RAML 1.0
+title: Budget Management API
+version: 0.1.0
+
+uses:
+    Budget: budget.raml
+    Exception: exception.raml
+    Transaction: transaction.raml
+
+traits:
+    jsonRequest:
+        usage: Apply this to any method which has a JSON body in its request
+        description: Add a Content-Type header
+        headers:
+            Content-Type:
+                example: application/json
+                required: true
+    notFoundContent:
+        usage: Apply this to any method which is able to throw 404 exceptions
+        description: Add a 404 response
+        responses:
+            404:
+                body:
+                    application/json:
+                        description: The required <<resourceName>> was not found
+                        type: Exception.Exception
+                        example: |
+                            {
+                                "code": 404,
+                                "message": "<<resourceName>> not found"
+                            }
+
+/budgets:
+    get:
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: Budget.Budget[]
+    post:
+        is: [jsonRequest]
+        body:
+            application/json:
+                type: Budget.Budget
+        responses:
+            201:
+                body:
+                    application/json:
+                        description: The created budget
+                        type: Budget.Budget
+
+    /{slug}:
+        get:
+            is: [notFoundContent: {resourceName: Budget}]
+            responses:
+                200:
+                    body:
+                        application/json:
+                            type: Budget.Budget
+
+        delete:
+            description: Deletes the given budget and all its data (sectors and transactions)
+            is: [notFoundContent: {resourceName : Budget}]
+            responses:
+                204:
+                    description: Empty success response
+
+        /sectors:
+            post:
+                description: Creates a new sector for the given budget
+                is: [jsonRequest, notFoundContent: {resourceName: Budget}]
+                responses:
+                    201:
+                        body:
+                            application/json:
+                                description: The created Sector
+                                type: Budget.Sector
+
+            /{slug}/transactions:
+                get:
+                    is: [notFoundContent: {resourceName : Budget or sector}]
+                    responses:
+                        200:
+                            body:
+                                application/json:
+                                    type: Transaction.Transaction
+                post:
+                    is: [jsonRequest, notFoundContent: {resourceName : Budget or sector}]
+                    body:
+                        application/json:
+                            type: Transaction.Transaction
+                    responses:
+                        201:
+                            body:
+                                application/json:
+                                    description: The created transaction
+                                    type: Transaction.Transaction
+                /{id}:
+                    get:
+                        is: [notFoundContent: {resourceName : Transaction}]
+                        responses:
+                            200:
+                                body:
+                                    application/json:
+                                        type: Transaction.Transaction
