@@ -18,6 +18,7 @@ type(
 		Type string `json:"type"`
 		Amount float64 `json:"amount"`
 		CreatedAt time.Time `json:"created_at"`
+		ProcessedAt time.Time `json:"processed_at"`
 	}
 	Transactions []Transaction
 )
