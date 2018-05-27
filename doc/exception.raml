@@ -1,0 +1,12 @@
+#%RAML 1.0 Library
+types:
+    Exception:
+        type: object
+        description: Representation of an error sent in the response
+        properties:
+            code:
+                type: number
+                description: HTTP code of the error
+            message:
+                type: string
+                description: Error message
