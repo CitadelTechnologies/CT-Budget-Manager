@@ -3,6 +3,7 @@ package transaction
 import(
 	"ct-budget-manager/server"
 	"net/http"
+	"time"
 	"github.com/gorilla/mux"
 )
 
@@ -11,6 +12,11 @@ func CreateTransactionAction(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 	data := server.DecodeJsonRequest(r)
+	var isset bool
+	processedAt := time.Now()
+	if processedAt, isset = data["processed_at"]; isset {
+		processedAt = time.Parse(time.RFC3339, data.(string))
+	}
 	transaction := CreateTransaction(
 		params["budget"],
 		params["sector"],
@@ -18,6 +24,7 @@ func CreateTransactionAction(w http.ResponseWriter, r *http.Request) {
 		data["description"].(string),
 		data["type"].(string),
 		data["amount"].(float64),
+		processedAt,
 	)
 	server.SendJsonResponse(w, 201, transaction)
 }

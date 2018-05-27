@@ -7,7 +7,7 @@ import(
 	"gopkg.in/mgo.v2/bson"
 )
 
-func CreateTransaction(budgetSlug string, sectorSlug string, wording string, description string, tType string, amount float64) *Transaction {
+func CreateTransaction(budgetSlug string, sectorSlug string, wording string, description string, tType string, amount float64, processedAt time.Time) *Transaction {
 	if tType != TypeExpense && tType != TypeIncome {
 		panic(exception.New(400, "Invalid transaction type", nil))
 	}
@@ -18,6 +18,7 @@ func CreateTransaction(budgetSlug string, sectorSlug string, wording string, des
 		Type: tType,
 		Amount: amount,
 		CreatedAt: time.Now(),
+		ProcessedAt: processedAt,
 	}
 	change := bson.M{
 		"$push": bson.M{"sectors.$.transactions": transaction},
